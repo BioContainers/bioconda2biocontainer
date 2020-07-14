@@ -6,7 +6,7 @@ from setuptools import setup
 
 
 def readme():
-    with open(os.path.join(os.path.dirname(__file__), 'README.rst')) as f:
+    with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
         return f.read()
 
 
@@ -16,7 +16,7 @@ setup(
     package_dir={
         '': 'src',
     },
-    data_files=[('', ['README.rst'])],
+    data_files=[('', ['README.md'])],
     version='0.0.1',
     description='Find biocontainer images for Bioconda packages',
     long_description=readme(),
