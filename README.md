@@ -1,32 +1,37 @@
 # bioconda2biocontainer
 
-*bioconda2biocontainer* search the Biocontainer registry and return the image name
+*bioconda2biocontainer* includes a series of python scripts and API to query
+the Biocontainer registry.
+
+## Scripts
+
+### *bioconda2biocontainer*
+
+This script search the Biocontainer registry and return the image name
 for a Bioconda package. The images can be sorted by date, size or number of downloads.
 
-## Basic usage
-
-### Get latest image for bedtools version 2.27.0
+#### Get latest image for bedtools version 2.27.0
 
 ```bash
 > bioconda2biocontainer --package_name bedtools --package_version 2.27.0
 quay.io/biocontainers/bedtools:2.27.0--he513fc3_4
 ```
 
-### Get smaller image for bedtools version 2.27.0
+#### Get smaller image for bedtools version 2.27.0
 
 ```bash
 > bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --sort_by_size
 quay.io/biocontainers/bedtools:2.27.0--he860b03_3
 ```
 
-### Get image with more downloads for bedtools version 2.27.0
+#### Get image with more downloads for bedtools version 2.27.0
 
 ```bash
 > bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --sort_by_download
 quay.io/biocontainers/bedtools:2.27.0--he860b03_3
 ```
 
-### List all available images for bedtools version 2.27.0
+#### List all available images for bedtools version 2.27.0
 
 ```bash
 > bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --all
@@ -38,7 +43,7 @@ quay.io/biocontainers/bedtools:2.27.0--1	2018-02-14T00:00:00Z	14094467	0
 quay.io/biocontainers/bedtools:2.27.0--0	2017-12-07T00:00:00Z	14087205	0
 ```
 
-### List all available versions for bedtools
+#### List all available versions for bedtools
 
 ```bash
 > bioconda2biocontainer --package_name bedtools
@@ -62,6 +67,74 @@ bedtools-2.20.1	2.20.1	http://api.biocontainers.pro/ga4gh/trs/v2/tools/bedtools/
 bedtools-2.19.1	2.19.1	http://api.biocontainers.pro/ga4gh/trs/v2/tools/bedtools/versions/bedtools-2.19.1
 bedtools-2.17.0	2.17.0	http://api.biocontainers.pro/ga4gh/trs/v2/tools/bedtools/versions/bedtools-2.17.0
 ```
+
+### biocontainers-search
+
+Search tools in Biocontainers registry and return a TAB separated table with Name, Versions (comma separated),
+Description, License and number of pulls. 
+
+#### Search proteomics tools
+
+```bash
+> biocontainers-search --search_term proteomics
+name	versions	description	license	pulls
+augustus	v3.3.2dfsg-2-deb,v3.2.3dfsg-1-deb,3.3.3,3.3.2,3.3,3.2.3,3.2.2,3.1	Augustus is a eukaryotic gene prediction tool. it can integrate evidence, e.g. from rna-seq, ests, proteomics, but can also predict genes ab initio. the ppx extension to augustus can take a protein sequence multiple sequence alignment as input to find new members of the family in a genome. it can be run through a web interface (see https://bio.tools/webaugustus), or downloaded and run locally.	Artistic-1.0	448371
+bioconductor-assessorf	1.6.0,1.4.0,1.2.0,1.0.2	Assess Gene Predictions Using Proteomics and Evolutionary Conservation	GPL-3	915
+bioconductor-customprodb	1.28.0,1.26.0,1.24.0,1.22.0,1.14.0	Generate customized protein database from ngs data, with a focus on rna-seq data, for proteomics search	Not available	10520
+```
+
+#### Search proteomics tools and return JSON data
+
+```bash
+> biocontainers-search --search_term proteomics --json
+[
+    {
+        "contains": [],
+        "description": "Augustus is a eukaryotic gene prediction tool. it can integrate evidence, e.g. from rna-seq, ests, proteomics, but can also predict genes ab initio. the ppx extension to augustus can take a protein sequence multiple sequence alignment as input to find new members of the family in a genome. it can be run through a web interface (see https://bio.tools/webaugustus), or downloaded and run locally.",
+        "id": "augustus",
+        "identifiers": [
+            "biotools:augustus",
+            "PMID:15215400"
+        ],
+        "license": "Artistic-1.0",
+        "name": "augustus",
+        "organization": "biocontainers",
+        "pulls": 448371,
+        "tool_tags": [
+            "biology",
+            "bioinformatics",
+            "c++",
+            "commandline",
+            "program",
+            "calculation",
+            "utility",
+            "ncurses",
+            "analysing",
+            "biological-sequence"
+        ],
+        "tool_url": "https://github.com/Gaius-Augustus/Augustus",
+        "toolclass": {
+            "description": "CommandLineTool",
+            "id": "0",
+            "name": "CommandLineTool"
+        },
+        "url": "http://api.biocontainers.pro/ga4gh/trs/v2/tools/augustus",
+        "versions": [
+            {
+                "id": "augustus-3.2.3",
+                "meta_version": "3.2.3",
+                "name": "augustus",
+                "url": "http://api.biocontainers.pro/ga4gh/trs/v2/tools/augustus/versions/augustus-3.2.3"
+            },
+            {
+                "id": "augustus-3.2.2",
+                "meta_version": "3.2.2",
+                "name": "augustus",
+                "url": "http://api.biocontainers.pro/ga4gh/trs/v2/tools/augustus/versions/augustus-3.2.2"
+            },
+            ...
+```
+
 
 ## Install
 

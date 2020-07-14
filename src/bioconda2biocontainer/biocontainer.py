@@ -5,23 +5,33 @@ import requests
 base_url = "http://api.biocontainers.pro/ga4gh/trs/v2/tools"
 
 
-def find_package_by_name(package_name):
-    response = requests.get('{0}/{1}'.format(base_url, package_name))
+def request_url_to_dict(url):
+    response = requests.get('{}'.format(url))
     if response.status_code == 200:
-        data = json.loads(response.text)
-        if data and 'versions' in data:
-            versions = data['versions']
-            data['versions'] = sorted(versions, key=lambda i: i['meta_version'], reverse=True)
-        return data
+        return json.loads(response.text)
     return response.status_code
+
+
+def find_package_by_name(package_name):
+    data = request_url_to_dict('{0}/{1}'.format(base_url, package_name))
+    if type(data) == int:
+        return data
+    if data and 'versions' in data:
+        versions = data['versions']
+        data['versions'] = sorted(versions, key=lambda i: i['meta_version'], reverse=True)
+    return data
+
+
+def find_package_by_term(search_term):
+    data = request_url_to_dict('{0}?all_fields_search={1}'.format(base_url, search_term))
+    return data
 
 
 def find_latest_image(package_name, package_version, all, sort_by_size,
                       sort_by_download, registry_host='quay.io'):
-    response = requests.get('{0}/{1}/versions/{1}-{2}'.format(
+    data = request_url_to_dict('{0}/{1}/versions/{1}-{2}'.format(
         base_url, package_name, package_version))
-    if response.status_code == 200:
-        data = json.loads(response.text)
+    if type(data) == dict or type(data) == list:
         versions = []
         if data and 'images' in data:
             for i in data['images']:
@@ -36,4 +46,4 @@ def find_latest_image(package_name, package_version, all, sort_by_size,
         if all:
             return versions
         return versions[0]
-    return response.status_code
+    return data

@@ -17,8 +17,8 @@ setup(
         '': 'src',
     },
     data_files=[('', ['README.md'])],
-    version='0.0.1',
-    description='Find biocontainer images for Bioconda packages',
+    version='0.0.2',
+    description='Find biocontainer images for tools',
     long_description=readme(),
     long_description_content_type='text/markdown',
     license='Public Domain',
@@ -52,6 +52,7 @@ setup(
     entry_points={
         'console_scripts': [
             'bioconda2biocontainer = bioconda2biocontainer.entry_point:main',
+            'biocontainers-search = bioconda2biocontainer.entry_point_search:main'
         ],
     }
 )

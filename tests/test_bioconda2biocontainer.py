@@ -2,6 +2,7 @@ import unittest
 
 from bioconda2biocontainer.biocontainer import find_latest_image
 from bioconda2biocontainer.biocontainer import find_package_by_name
+from bioconda2biocontainer.biocontainer import find_package_by_term
 
 
 class TestSet(unittest.TestCase):
@@ -48,3 +49,7 @@ class TestSet(unittest.TestCase):
     def test_find_latest_image_status_code(self):
         images = find_latest_image('bedtoolss', '2.27.0', True, False, True, 'quay.io')
         assert images == 204
+
+    def test_search_tool(self):
+        data = find_package_by_term('proteomics')
+        assert type(data) == list
