@@ -1,5 +1,7 @@
 # bioconda2biocontainer
 
+![Python package](https://github.com/BioContainers/bioconda2biocontainer/workflows/Python%20package/badge.svg)
+
 *bioconda2biocontainer* includes a series of python scripts and API to query
 the Biocontainer registry.
 
