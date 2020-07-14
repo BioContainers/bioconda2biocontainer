@@ -10,37 +10,49 @@ the Biocontainer registry.
 This script search the Biocontainer registry and return the image name
 for a Bioconda package. The images can be sorted by date, size or number of downloads.
 
-#### Get latest image for bedtools version 2.27.0
-
-```bash
-> bioconda2biocontainer --package_name bedtools --package_version 2.27.0
-quay.io/biocontainers/bedtools:2.27.0--he513fc3_4
-```
-
-#### Get smaller image for bedtools version 2.27.0
-
-```bash
-> bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --sort_by_size
-quay.io/biocontainers/bedtools:2.27.0--he860b03_3
-```
-
-#### Get image with more downloads for bedtools version 2.27.0
-
-```bash
-> bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --sort_by_download
-quay.io/biocontainers/bedtools:2.27.0--he860b03_3
-```
+Option **container_type** can be: Docker, Singularity or Conda
 
 #### List all available images for bedtools version 2.27.0
 
 ```bash
 > bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --all
-image	updated	size	downloads
-quay.io/biocontainers/bedtools:2.27.0--he513fc3_4	2019-10-26T00:00:00Z	17332806	0
-quay.io/biocontainers/bedtools:2.27.0--he860b03_3	2019-02-03T00:00:00Z	13482660	0
-quay.io/biocontainers/bedtools:2.27.0--he941832_2	2018-06-25T00:00:00Z	13652262	0
-quay.io/biocontainers/bedtools:2.27.0--1	2018-02-14T00:00:00Z	14094467	0
-quay.io/biocontainers/bedtools:2.27.0--0	2017-12-07T00:00:00Z	14087205	0
+image	updated	size	downloads	container_type
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--he513fc3_4	2019-10-27T05:29:00Z	17178624	0	Singularity
+quay.io/biocontainers/bedtools:2.27.0--he513fc3_4	2019-10-26T00:00:00Z	17332806	0	Docker
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--0	2019-08-27T18:20:00Z	13885440	0	Singularity
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--1	2019-08-01T21:40:00Z	13889536	0	Singularity
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--he860b03_3	2019-08-01T21:40:00Z	13389824	0	Singularity
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--he941832_2	2019-08-01T21:40:00Z	13549568	0	Singularity
+quay.io/biocontainers/bedtools:2.27.0--he860b03_3	2019-02-03T00:00:00Z	13482660	0	Docker
+quay.io/biocontainers/bedtools:2.27.0--he941832_2	2018-06-25T00:00:00Z	13652262	0	Docker
+bedtools==2.27.0--he860b03_3	2018-06-24T00:00:00Z	1129407	35562	Conda
+bedtools==2.27.0--0	2018-06-24T00:00:00Z	1129407	35562	Conda
+bedtools==2.27.0--1	2018-06-24T00:00:00Z	1129407	35562	Conda
+bedtools==2.27.0--he941832_2	2018-06-24T00:00:00Z	1129407	35562	Conda
+bedtools==2.27.0--he513fc3_4	2018-06-24T00:00:00Z	1129407	35562	Conda
+quay.io/biocontainers/bedtools:2.27.0--1	2018-02-14T00:00:00Z	14094467	0	Docker
+quay.io/biocontainers/bedtools:2.27.0--0	2017-12-07T00:00:00Z	14087205	0	Docker
+```
+
+#### Get latest docker image for bedtools version 2.27.0
+
+```bash
+> bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --container_type Docker
+quay.io/biocontainers/bedtools:2.27.0--he513fc3_4
+```
+
+#### Get smaller singularity image for bedtools version 2.27.0
+
+```bash
+> bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --container_type Singularity --sort_by_size
+https://depot.galaxyproject.org/singularity/bedtools:2.27.0--he860b03_3
+```
+
+#### Get the conda package with more downloads for bedtools version 2.27.0
+
+```bash
+> bioconda2biocontainer --package_name bedtools --package_version 2.27.0 --container_type Conda --sort_by_download
+bedtools==2.27.0--he860b03_3
 ```
 
 #### List all available versions for bedtools

@@ -11,7 +11,9 @@ def print_tools_table(data):
         print('{}'.format(d['name']), end='\t')
         versions = sorted(d['versions'], key=lambda i: i['meta_version'], reverse=True)
         print(','.join(map(lambda x: x['meta_version'], versions)), end='\t')
-        print('{}\t{}\t{}'.format(d['description'], d['license'], d['pulls']))
+        if 'license' not in d:
+            d['license'] = 'Not available'
+        print('{}\t{}\t{}'.format(d['description'].replace('\n', ''), d['license'], d['pulls']))
 
 
 def main():

@@ -27,15 +27,33 @@ def find_package_by_term(search_term):
     return data
 
 
+def filter_by_container_registry(container_type, registry_host, i):
+    if registry_host and container_type and \
+            i['registry_host'].startswith(registry_host) and \
+            container_type == i['image_type']:
+        return True
+    if not registry_host and container_type and \
+            container_type == i['image_type']:
+        return True
+    if registry_host and not container_type and \
+            i['registry_host'].startswith(registry_host):
+        return True
+    if not registry_host and not container_type:
+        return True
+    return False
+
+
 def find_latest_image(package_name, package_version, all, sort_by_size,
-                      sort_by_download, registry_host='quay.io'):
+                      sort_by_download, container_type, registry_host):
     data = request_url_to_dict('{0}/{1}/versions/{1}-{2}'.format(
         base_url, package_name, package_version))
     if type(data) == dict or type(data) == list:
         versions = []
         if data and 'images' in data:
             for i in data['images']:
-                if i['registry_host'].startswith(registry_host):
+                if filter_by_container_registry(container_type, registry_host, i):
+                    if 'downloads' not in i:
+                        i['downloads'] = 0
                     versions.append(i)
         if sort_by_size:
             versions = sorted(versions, key=lambda i: i['size'])

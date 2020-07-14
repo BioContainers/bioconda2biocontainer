@@ -19,17 +19,19 @@ def find_tool(package_name, print_json):
 
 
 def find_latest_image_main(package_name, package_version, json, all, sort_by_size,
-                           sort_by_download, registry_host):
+                           sort_by_download, container_type, registry_host):
     images = find_latest_image(package_name, package_version, all, sort_by_size,
-                               sort_by_download, registry_host)
+                               sort_by_download, container_type, registry_host)
     if type(images) == list:
         if json:
             print(json.dumps(images, indent=4))
         elif all:
-            print('image\tupdated\tsize\tdownloads')
+            print('image\tupdated\tsize\tdownloads\tcontainer_type')
             for i in images:
-                print('{}\t{}\t{}\t{}'.format(
-                    i['image_name'], i['updated'], i['size'], i['downloads']))
+                print('{}\t{}\t{}\t{}\t{}'.format(
+                    i['image_name'], i['updated'],
+                    i['size'], i['downloads'],
+                    i['image_type']))
     elif type(images) == dict:
         print(images['image_name'])
     else:
@@ -46,8 +48,12 @@ def main():
                         required=True)
     parser.add_argument('--package_version', help='Bioconda package version',
                         required=False)
-    parser.add_argument('--registry_host', help='Registry host. Default: quay.io',
-                        default='quay.io', required=False)
+    parser.add_argument('--container_type', help='Container type. Default: Docker. '
+                                                 'Values: Docker, Conda, Singularity',
+                        default=None, required=False)
+    parser.add_argument('--registry_host', help='Registry host. Default: quay.io.'
+                                                'Values: ',
+                        default=None, required=False)
     parser.add_argument('--json', help='Print json format', action='store_true',
                         required=False)
     parser.add_argument('--all', help='Print all images', action='store_true',
@@ -65,7 +71,8 @@ def main():
 
     if package_version:
         find_latest_image_main(package_name, package_version, args.json, args.all,
-                               args.sort_by_size, args.sort_by_download, args.registry_host)
+                               args.sort_by_size, args.sort_by_download,
+                               args.container_type, args.registry_host)
     else:
         find_tool(package_name, args.json)
 

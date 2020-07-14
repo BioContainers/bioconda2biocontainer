@@ -12,11 +12,11 @@ class TestSet(unittest.TestCase):
         assert tool['id'] == 'bedtools'
 
     def test_find_latest_image(self):
-        images = find_latest_image('bedtools', '2.27.0', False, False, False, 'quay.io')
+        images = find_latest_image('bedtools', '2.27.0', False, False, False, 'Docker', 'quay.io')
         assert type(images) == dict
 
     def test_find_latest_image_all(self):
-        images = find_latest_image('bedtools', '2.27.0', True, False, False, 'quay.io')
+        images = find_latest_image('bedtools', '2.27.0', True, False, False, 'Docker', 'quay.io')
         flag = False
         for i in images:
             if i['updated'] == '2019-10-26T00:00:00Z':
@@ -29,7 +29,7 @@ class TestSet(unittest.TestCase):
         assert tool == 204
 
     def test_find_latest_image_sort_by_size(self):
-        images = find_latest_image('bedtools', '2.27.0', True, True, False, 'quay.io')
+        images = find_latest_image('bedtools', '2.27.0', True, True, False, 'Docker', 'quay.io')
         flag = False
         for i in images:
             if i['updated'] == '2019-10-26T00:00:00Z':
@@ -38,7 +38,7 @@ class TestSet(unittest.TestCase):
         assert flag
 
     def test_find_latest_image_sort_by_downloads(self):
-        images = find_latest_image('bedtools', '2.27.0', True, False, True, 'quay.io')
+        images = find_latest_image('bedtools', '2.27.0', True, False, True, 'Docker', 'quay.io')
         flag = False
         for i in images:
             if i['updated'] == '2019-10-26T00:00:00Z':
@@ -47,7 +47,7 @@ class TestSet(unittest.TestCase):
         assert flag
 
     def test_find_latest_image_status_code(self):
-        images = find_latest_image('bedtoolss', '2.27.0', True, False, True, 'quay.io')
+        images = find_latest_image('bedtoolss', '2.27.0', True, False, True, 'Docker', 'quay.io')
         assert images == 204
 
     def test_search_tool(self):
