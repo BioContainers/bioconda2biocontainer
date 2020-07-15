@@ -17,8 +17,8 @@ setup(
         '': 'src',
     },
     data_files=[('', ['README.md'])],
-    version='0.0.2',
-    description='Find biocontainer images for tools',
+    version='0.0.3',
+    description='Tools to synchronize bioconda packages and versions with Biocontainer images',
     long_description=readme(),
     long_description_content_type='text/markdown',
     license='Public Domain',
@@ -27,7 +27,8 @@ setup(
     maintainer='Vera Alvarez, Roberto',
     maintainer_email='veraalva' '@' 'ncbi.nlm.nih.gov',
     url='https://github.com/BioContainers/bioconda2biocontainer',
-    install_requires=['requests'],
+    install_requires=['requests',
+                      'PyYAML'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         'Intended Audience :: Science/Research',
@@ -52,7 +53,8 @@ setup(
     entry_points={
         'console_scripts': [
             'bioconda2biocontainer = bioconda2biocontainer.entry_point:main',
-            'biocontainers-search = bioconda2biocontainer.entry_point_search:main'
+            'biocontainers-search = bioconda2biocontainer.entry_point_search:main',
+            'bioconda2cwldocker = bioconda2biocontainer.entry_point_update_cwl_docker:main'
         ],
     }
 )

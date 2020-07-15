@@ -149,6 +149,95 @@ bioconductor-customprodb	1.28.0,1.26.0,1.24.0,1.22.0,1.14.0	Generate customized 
             ...
 ```
 
+### bioconda2cwldocker
+
+This script reads a conda env yaml file and replace, for each package in the environment, the images defined 
+in the CWL or Yaml files inside the directory pass in the option **cwl_path**
+
+#### Example
+
+We would like to use the CWLs defined in the repo https://github.com/ncbi/cwl-ngs-workflows-cbb with the versions 
+defined in this conda env:
+
+###### Conda env file
+
+```yaml
+name: rnaseq
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bedtools=2.29.2
+  - fastqc=0.11.9
+  - sra-tools=2.10.8
+  - star=2.7.5a
+```
+
+###### Cloning the repo
+
+```bash
+$ git clone https://github.com/ncbi/cwl-ngs-workflows-cbb
+Cloning into 'cwl-ngs-workflows-cbb'...
+remote: Enumerating objects: 94, done.
+remote: Counting objects: 100% (94/94), done.
+remote: Compressing objects: 100% (69/69), done.
+remote: Total 1924 (delta 47), reused 50 (delta 25), pack-reused 1830
+Receiving objects: 100% (1924/1924), 319.82 KiB | 3.48 MiB/s, done.
+Resolving deltas: 100% (1216/1216), done.
+```
+
+###### Print defined images for the tools in the CWLs
+
+```bash
+$ cat cwl-ngs-workflows-cbb/tools/bedtools/bedtools.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/bedtools:2.28.0--hdf88d34_0
+
+$ cat cwl-ngs-workflows-cbb/tools/fastqc/fastqc.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/fastqc:0.11.8--1
+
+$ cat cwl-ngs-workflows-cbb/tools/sra-toolkit/sra-toolkit.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/sra-tools:2.10.7--pl526haddd2b5_1
+
+$ cat cwl-ngs-workflows-cbb/tools/star/star.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/star:2.7.5a--0
+```
+
+###### Running bioconda2cwldocker
+
+```bash
+$ bioconda2cwldocker --conda_env_file conda-env.yaml --cwl_path cwl-ngs-workflows-cbb/
+bedtools with version 2.29.2 update image to: quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0
+	cwl-ngs-workflows-cbb/tools/bedtools/bedtools.yml with old image replaced: quay.io/biocontainers/bedtools:2.28.0--hdf88d34_0
+fastqc with version 0.11.9 update image to: quay.io/biocontainers/fastqc:0.11.9--0
+	cwl-ngs-workflows-cbb/tools/fastqc/fastqc.yml with old image replaced: quay.io/biocontainers/fastqc:0.11.8--1
+sra-tools with version 2.10.8 update image to: quay.io/biocontainers/sra-tools:2.10.8--pl526haddd2b5_0
+	cwl-ngs-workflows-cbb/tools/sra-toolkit/sra-toolkit.yml with old image replaced: quay.io/biocontainers/sra-tools:2.10.7--pl526haddd2b5_1
+```
+
+##### Print new defined images for the tools in the CWLs
+
+```bash
+$ cat cwl-ngs-workflows-cbb/tools/bedtools/bedtools.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/bedtools:2.29.2--hc088bd4_0
+
+$ cat cwl-ngs-workflows-cbb/tools/fastqc/fastqc.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/fastqc:0.11.9--0
+
+$ cat cwl-ngs-workflows-cbb/tools/sra-toolkit/sra-toolkit.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/sra-tools:2.10.8--pl526haddd2b5_0
+
+$ cat cwl-ngs-workflows-cbb/tools/star/star.yml
+ class: DockerRequirement
+ dockerPull: quay.io/biocontainers/star:2.7.5a--0
+```
 
 ## Install
 
