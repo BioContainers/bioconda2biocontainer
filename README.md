@@ -152,7 +152,7 @@ bioconductor-customprodb	1.28.0,1.26.0,1.24.0,1.22.0,1.14.0	Generate customized 
 ### bioconda2cwldocker
 
 This script reads a conda env yaml file and replace, for each package in the environment, the images defined 
-in the CWL or Yaml files inside the directory pass in the option **cwl_path**
+in the CWL or Yaml files inside the directory passed in the option **cwl_path**
 
 #### Example
 
@@ -238,6 +238,8 @@ $ cat cwl-ngs-workflows-cbb/tools/star/star.yml
  class: DockerRequirement
  dockerPull: quay.io/biocontainers/star:2.7.5a--0
 ```
+
+Note that the STAR image name was not changed as the CWL was using the same version
 
 ## Install
 
