@@ -17,7 +17,7 @@ setup(
         '': 'src',
     },
     data_files=[('', ['README.md'])],
-    version='0.0.3',
+    version='0.0.4',
     description='Tools to synchronize bioconda packages and versions with Biocontainer images',
     long_description=readme(),
     long_description_content_type='text/markdown',

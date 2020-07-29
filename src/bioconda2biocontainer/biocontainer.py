@@ -33,6 +33,7 @@ def filter_by_container_registry(container_type, registry_host, i):
             container_type == i['image_type']:
         return True
     if not registry_host and container_type and \
+            'image_type' in i and \
             container_type == i['image_type']:
         return True
     if registry_host and not container_type and \
@@ -43,8 +44,8 @@ def filter_by_container_registry(container_type, registry_host, i):
     return False
 
 
-def find_latest_image(package_name, package_version, all, sort_by_size,
-                      sort_by_download, container_type, registry_host):
+def find_latest_image(package_name, package_version, all=False, sort_by_size=False,
+                      sort_by_download=False, container_type=None, registry_host=None):
     data = request_url_to_dict('{0}/{1}/versions/{1}-{2}'.format(
         base_url, package_name, package_version))
     if type(data) == dict or type(data) == list:
@@ -63,5 +64,8 @@ def find_latest_image(package_name, package_version, all, sort_by_size,
             versions = sorted(versions, key=lambda i: i['updated'], reverse=True)
         if all:
             return versions
-        return versions[0]
+        if versions:
+            return versions[0]
+        else:
+            return None
     return data

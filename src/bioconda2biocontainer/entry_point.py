@@ -28,14 +28,23 @@ def find_latest_image_main(package_name, package_version, json, all, sort_by_siz
         elif all:
             print('image\tupdated\tsize\tdownloads\tcontainer_type')
             for i in images:
+                image_name = '' if 'image_name' not in i else i['image_name']
+                image_type = '' if 'image_type' not in i else i['image_type']
+                updated = '' if 'updated' not in i else i['updated']
+                size = '' if 'size' not in i else i['size']
+                downloads = '' if 'downloads' not in i else i['downloads']
                 print('{}\t{}\t{}\t{}\t{}'.format(
-                    i['image_name'], i['updated'],
-                    i['size'], i['downloads'],
-                    i['image_type']))
+                    image_name, updated,
+                    size, downloads,
+                    image_type))
     elif type(images) == dict:
         print(images['image_name'])
     else:
-        print('No version {} available for package {}'.format(package_version, package_name))
+        if container_type:
+            print('No version {} available for package {} with container type {}'.format(
+                package_version, package_name, container_type))
+        else:
+            print('No version {} available for package {}'.format(package_version, package_name))
         print('Searching available versions for package {}'.format(package_name))
         find_tool(package_name, False)
 
