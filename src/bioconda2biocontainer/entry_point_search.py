@@ -2,6 +2,7 @@
 import argparse
 import json
 
+from bioconda2biocontainer import __version__
 from bioconda2biocontainer.biocontainer import find_package_by_term
 
 
@@ -20,6 +21,8 @@ def main():
     parser = argparse.ArgumentParser(
         description='Find Biocontainers tools')
 
+    parser.add_argument('-v', '--version', action='version',
+                        version='PM4NGS version: {}'.format(__version__))
     parser.add_argument('--search_term', help='Search term',
                         required=True)
     parser.add_argument('--json', help='Print json format', action='store_true',

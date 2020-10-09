@@ -9,6 +9,8 @@ def readme():
     with open(os.path.join(os.path.dirname(__file__), 'README.md')) as f:
         return f.read()
 
+# Set __version__
+exec(open('src/bioconda2biocontainer/__init__.py').read())
 
 setup(
     name='bioconda2biocontainer',
@@ -17,7 +19,8 @@ setup(
         '': 'src',
     },
     data_files=[('', ['README.md'])],
-    version='0.0.4',
+    use_scm_version=True,
+    setup_requires=['wheel', 'setuptools_scm'],
     description='Tools to synchronize bioconda packages and versions with Biocontainer images',
     long_description=readme(),
     long_description_content_type='text/markdown',

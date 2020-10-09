@@ -3,6 +3,7 @@ import argparse
 
 import yaml
 
+from bioconda2biocontainer import __version__
 from bioconda2biocontainer.update_cwl_docker_image import update_cwl_docker_from_tool_name
 
 
@@ -10,6 +11,8 @@ def main():
     parser = argparse.ArgumentParser(
         description='Replace Docker image in CWL from conda env yaml file')
 
+    parser.add_argument('-v', '--version', action='version',
+                        version='PM4NGS version: {}'.format(__version__))
     parser.add_argument('--conda_env_file', help='Conda env yaml file',
                         required=True)
     parser.add_argument('--cwl_path', help='Path to the CWL directory',

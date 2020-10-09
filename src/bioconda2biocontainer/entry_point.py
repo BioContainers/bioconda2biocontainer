@@ -2,6 +2,7 @@
 import argparse
 import json
 
+from bioconda2biocontainer import __version__
 from bioconda2biocontainer.biocontainer import find_package_by_name, find_latest_image
 
 
@@ -53,6 +54,8 @@ def main():
     parser = argparse.ArgumentParser(
         description='Find Biocontainers images from Bioconda packages')
 
+    parser.add_argument('-v', '--version', action='version',
+                        version='PM4NGS version: {}'.format(__version__))
     parser.add_argument('--package_name', help='Bioconda package name',
                         required=True)
     parser.add_argument('--package_version', help='Bioconda package version',
