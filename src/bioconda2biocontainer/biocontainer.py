@@ -55,6 +55,10 @@ def find_latest_image(package_name, package_version, all=False, sort_by_size=Fal
                 if filter_by_container_registry(container_type, registry_host, i):
                     if 'downloads' not in i:
                         i['downloads'] = 0
+                    if 'updated' not in i:
+                        i['updated'] = ''
+                    if 'size' not in i:
+                        i['size'] = 0
                     versions.append(i)
         if sort_by_size:
             versions = sorted(versions, key=lambda i: i['size'])
