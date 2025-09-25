@@ -21,7 +21,7 @@ jobs:
       with:
         python-version: 3.12
     - name: Install Poetry
-      run: pip install poetry
+      run: pip install poetry tox
     - name: Install dependencies
       run: poetry install
     - name: Test with tox
