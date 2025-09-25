@@ -33,7 +33,7 @@ def main():
     search_term = args.search_term
 
     data = find_package_by_term(search_term)
-    if type(data) == int:
+    if isinstance(data, int):
         print('No packages found with search term: {}'.format(search_term))
     elif args.json:
         print(json.dumps(data, indent=4))

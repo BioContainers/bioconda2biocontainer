@@ -1,5 +1,5 @@
 import json
-
+from typing import Optional, Union
 import requests
 
 base_url = "http://api.biocontainers.pro/ga4gh/trs/v2/tools"
@@ -14,7 +14,7 @@ def request_url_to_dict(url):
 
 def find_package_by_name(package_name):
     data = request_url_to_dict('{0}/{1}'.format(base_url, package_name))
-    if type(data) == int:
+    if isinstance(data, int):
         return data
     if data and 'versions' in data:
         versions = data['versions']
@@ -44,32 +44,62 @@ def filter_by_container_registry(container_type, registry_host, i):
     return False
 
 
-def find_latest_image(package_name, package_version, all=False, sort_by_size=False,
-                      sort_by_download=False, container_type=None, registry_host=None):
-    data = request_url_to_dict('{0}/{1}/versions/{1}-{2}'.format(
-        base_url, package_name, package_version))
-    if type(data) == dict or type(data) == list:
-        versions = []
-        if data and 'images' in data:
-            for i in data['images']:
-                if filter_by_container_registry(container_type, registry_host, i):
-                    if 'downloads' not in i:
-                        i['downloads'] = 0
-                    if 'updated' not in i:
-                        i['updated'] = ''
-                    if 'size' not in i:
-                        i['size'] = 0
-                    versions.append(i)
-        if sort_by_size:
-            versions = sorted(versions, key=lambda i: i['size'])
-        elif sort_by_download:
-            versions = sorted(versions, key=lambda i: i['downloads'], reverse=True)
-        else:
-            versions = sorted(versions, key=lambda i: i['updated'], reverse=True)
-        if all:
-            return versions
-        if versions:
-            return versions[0]
-        else:
-            return None
-    return data
+def _normalize_image_fields(image: dict) -> dict:
+    """Ensure required fields exist in the image dict."""
+    image.setdefault("downloads", 0)
+    image.setdefault("updated", "")
+    image.setdefault("size", 0)
+    return image
+
+
+def _sort_images(images: list[dict], sort_by_size: bool, sort_by_download: bool) -> list[dict]:
+    """Sort images based on size, downloads, or updated date."""
+    if sort_by_size:
+        return sorted(images, key=lambda i: i["size"])
+    if sort_by_download:
+        return sorted(images, key=lambda i: i["downloads"], reverse=True)
+    return sorted(images, key=lambda i: i["updated"], reverse=True)
+
+
+def find_latest_image(
+        package_name: str,
+        package_version: str,
+        all: bool = False,
+        sort_by_size: bool = False,
+        sort_by_download: bool = False,
+        container_type: Optional[str] = None,
+        registry_host: Optional[str] = None,
+) -> Union[dict, list[dict], int, None]:
+    """
+    Retrieve the latest container image for a given package version.
+
+    Args:
+        package_name: Bioconda package name.
+        package_version: Specific version string.
+        all: If True, return all matching images instead of only the latest.
+        sort_by_size: Sort by image size ascending.
+        sort_by_download: Sort by download count descending.
+        container_type: Optional filter by container type (e.g., 'Docker').
+        registry_host: Optional filter by registry host.
+
+    Returns:
+        The latest image dict, a list of image dicts if all=True,
+        an HTTP status code (int) on error, or None if no images found.
+    """
+    url = f"{base_url}/{package_name}/versions/{package_name}-{package_version}"
+    data = request_url_to_dict(url)
+
+    if not isinstance(data, dict) or "images" not in data:
+        return data
+
+    images = [
+        _normalize_image_fields(i)
+        for i in data["images"]
+        if filter_by_container_registry(container_type, registry_host, i)
+    ]
+
+    sorted_images = _sort_images(images, sort_by_size, sort_by_download)
+
+    if all:
+        return sorted_images
+    return sorted_images[0] if sorted_images else None

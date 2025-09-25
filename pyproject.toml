@@ -1,0 +1,57 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "bioconda2biocontainer"
+version = "0.0.0"
+description = "Tools to synchronize bioconda packages and versions with Biocontainer images"
+license = "Public Domain"
+authors = ["Vera Alvarez, Roberto <veraalva@ncbi.nlm.nih.gov>"]
+maintainers = ["Vera Alvarez, Roberto <veraalva@ncbi.nlm.nih.gov>"]
+readme = "README.md"
+homepage = "https://github.com/BioContainers/bioconda2biocontainer"
+repository = "https://github.com/BioContainers/bioconda2biocontainer"
+documentation = "https://github.com/BioContainers/bioconda2biocontainer/issues"
+keywords = ["Biocontainers"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: Public Domain",
+    "Natural Language :: English",
+    "Operating System :: Unix",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Bio-Informatics",
+]
+
+packages = [
+    { include = "bioconda2biocontainer", from = "src" },
+]
+
+[tool.poetry.dependencies]
+python = ">=3.9,<4.0"
+requests = "*"
+PyYAML = "*"
+
+[tool.poetry.group.dev.dependencies]
+pytest = "*"
+pytest-cov = "*"
+flake8 = "*"
+
+[tool.poetry.scripts]
+bioconda2biocontainer = "bioconda2biocontainer.entry_point:main"
+biocontainers-search = "bioconda2biocontainer.entry_point_search:main"
+bioconda2cwldocker = "bioconda2biocontainer.entry_point_update_cwl_docker:main"
+
+[tool.poetry.urls]
+Source = "https://github.com/BioContainers/bioconda2biocontainer"
+Tracker = "https://github.com/BioContainers/bioconda2biocontainer/issues"
+
+[tool.poetry-dynamic-versioning]
+enable = true
+vcs = "git"
+style = "semver"
