@@ -8,7 +8,7 @@ from bioconda2biocontainer.biocontainer import find_package_by_name, find_latest
 
 def find_tool(package_name, print_json):
     tool = find_package_by_name(package_name)
-    if type(tool) == dict:
+    if isinstance(tool, dict):
         if print_json:
             print(json.dumps(tool, indent=4))
         else:
@@ -23,7 +23,7 @@ def find_latest_image_main(package_name, package_version, json, all, sort_by_siz
                            sort_by_download, container_type, registry_host):
     images = find_latest_image(package_name, package_version, all, sort_by_size,
                                sort_by_download, container_type, registry_host)
-    if type(images) == list:
+    if isinstance(images, list):
         if json:
             print(json.dumps(images, indent=4))
         elif all:
@@ -38,7 +38,7 @@ def find_latest_image_main(package_name, package_version, json, all, sort_by_siz
                     image_name, updated,
                     size, downloads,
                     image_type))
-    elif type(images) == dict:
+    elif isinstance(images, dict):
         print(images['image_name'])
     else:
         if container_type:
